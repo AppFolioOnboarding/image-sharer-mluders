@@ -2,13 +2,33 @@ require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @image = Image.create!(url: 'http://abc.png', title: 'hello')
+    @image = Image.create!(
+      url: 'http://abc.png',
+      title: 'hello',
+      created_at: Time.zone.now - 5.minutes
+    )
   end
 
   def test_index
+    Image.create!(
+      url: 'http://xyz.png',
+      title: 'howdy',
+      created_at: Time.zone.now
+    )
+
     get images_path
 
     assert_select '#add-image'
+    assert_select 'img', count: 2
+
+    # Ensure that images are ordered by creation date, descending
+    assert_select 'li:nth-of-type(1)' do
+      assert_select 'img[src=?]', 'http://xyz.png'
+    end
+
+    assert_select 'li:nth-of-type(2)' do
+      assert_select 'img[src=?]', 'http://abc.png'
+    end
   end
 
   def test_show
