@@ -1,0 +1,28 @@
+<%= form_with scope: :image, url: images_path, local: true do |form| %>
+
+  <% if @image.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% @image.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :url, 'URL' %><br>
+    <%= form.text_field :url %>
+  </p>
+
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', images_path %>
