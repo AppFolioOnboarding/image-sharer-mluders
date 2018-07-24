@@ -43,6 +43,9 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to image_path(image)
     assert_equal 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png', image.url
     assert_equal 'AppFolio logo', image.title
+
+    follow_redirect!
+    assert_select '.notice', 'The image has been added.'
   end
 
   def test_create__invalid
