@@ -31,6 +31,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_index__no_image
+    Image.destroy_all
+
+    get images_path
+    assert_response :ok
+    assert_select 'img', count: 0
+  end
+
   def test_show
     image2 = Image.create!(url: 'http://abc.png', title: 'test title')
     get image_path(image2)
