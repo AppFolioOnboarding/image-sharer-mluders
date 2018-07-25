@@ -1,1 +1,12 @@
 <%= link_to 'Add an image', new_image_path, id: 'add-image' %>
+
+<ul>
+  <% @images.each do |image| %>
+    <li>
+      <%= link_to image_path(image) do %>
+        <%= image_tag(image.url) %>
+        <p><%= image.title %></p>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
