@@ -18,6 +18,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
     get images_path
 
+    assert_response :ok
     assert_select '#add-image'
     assert_select 'img', count: 2
 
@@ -35,6 +36,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     Image.destroy_all
 
     get images_path
+
     assert_response :ok
     assert_select 'img', count: 0
   end
