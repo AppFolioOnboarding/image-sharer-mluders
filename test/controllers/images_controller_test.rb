@@ -42,12 +42,23 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_show
-    image2 = Image.create!(url: 'http://abc.png', title: 'test title')
+    image2 = Image.create!(
+      url: 'http://abc.png',
+      title: 'test title',
+      tag_list: %w[cute awesome]
+    )
+
     get image_path(image2)
 
     assert_response :ok
     assert_select '#image-title', text: 'test title'
     assert_select 'img[src=?]', 'http://abc.png'
+
+    assert_select '.tag-list' do
+      assert_select 'li p', count: 2
+      assert_select 'li:nth-of-type(1)', text: 'cute'
+      assert_select 'li:nth-of-type(2)', text: 'awesome'
+    end
   end
 
   def test_new
@@ -94,6 +105,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_empty Image.last.tag_list
+    assert_select '.tag-count', count: 0
+
   end
 
   def test_create__valid_with_no_tag_list
