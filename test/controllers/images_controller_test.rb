@@ -85,35 +85,17 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to image_path(image)
     assert_equal 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png', image.url
     assert_equal 'AppFolio logo', image.title
-    assert_equal %w(cool appfolio), image.tag_list
+    assert_equal %w[cool appfolio], image.tag_list
 
     follow_redirect!
     assert_select '.notice', 'The image has been added.'
-  end
-
-  def test_create__valid_with_empty_tag_list
-    params = {
-      'image' => {
-        'url' => 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
-        'title' => 'AppFolio logo',
-        'tag_list' => ''
-      }
-    }
-
-    assert_difference 'Image.count', 1 do
-      post images_path, params: params
-    end
-
-    assert_empty Image.last.tag_list
-    assert_select '.tag-count', count: 0
-
   end
 
   def test_create__valid_with_no_tag_list
     params = {
       'image' => {
         'url' => 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
-        'title' => 'AppFolio logo',
+        'title' => 'AppFolio logo'
       }
     }
 

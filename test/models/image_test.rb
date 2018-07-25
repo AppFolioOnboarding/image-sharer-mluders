@@ -65,23 +65,22 @@ class ImageTest < ActiveSupport::TestCase
   end
 
   def test_tag__find_image_with_tag
-    imageA = Image.new(url: 'https://abc.png',
-                      title: 'AppFolio Logo')
-    imageA.tag_list.add('awesome')
-    imageA.save
+    image_a = Image.new(url: 'https://abc.png',
+                        title: 'AppFolio Logo')
+    image_a.tag_list.add('awesome')
+    image_a.save
 
-    imageB = Image.new(url: 'https://xyz.png',
-                      title: 'AppFolio Logo')
-    imageB.tag_list.add('cute')
-    imageB.save
+    image_b = Image.new(url: 'https://xyz.png',
+                        title: 'AppFolio Logo')
+    image_b.tag_list.add('cute')
+    image_b.save
 
-    imageC = Image.new(url: 'https://xyz.png',
-                       title: 'AppFolio Logo')
-    imageC.save
+    image_c = Image.new(url: 'https://xyz.png',
+                        title: 'AppFolio Logo')
+    image_c.save
 
     results = Image.tagged_with('awesome')
-    assert_equal imageA, results.first
+    assert_equal image_a, results.first
     assert_equal 1, results.length
   end
-
 end
