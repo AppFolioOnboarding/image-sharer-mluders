@@ -1,6 +1,13 @@
 class ImagesController < ApplicationController
   def index
-    @images = Image.order(created_at: :desc)
+    # get the query string
+    # filter
+    tag = params['tag']
+    @images = if tag.present?
+                Image.tagged_with(tag).order(created_at: :desc)
+              else
+                Image.order(created_at: :desc)
+              end
   end
 
   def show
