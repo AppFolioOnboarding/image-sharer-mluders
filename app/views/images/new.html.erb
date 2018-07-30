@@ -22,7 +22,7 @@
 
   <p>
     <%= form.label :tag_list %><br>
-    <%= form.text_field :tag_list %>
+    <%= form.text_field :tag_list, value: @image.tag_list.to_s %>
   </p>
 
   <p>
