@@ -74,9 +74,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img[src=?]', 'http://abc.png'
 
     assert_select '.tag-list' do
-      assert_select 'li p', count: 2
-      assert_select 'li:nth-of-type(1)', text: 'cute'
-      assert_select 'li:nth-of-type(2)', text: 'awesome'
+      assert_select 'li a', count: 2
+      assert_select 'li:nth-of-type(1)' do
+        assert_select 'a[href=?]', images_path(tag: 'cute')
+      end
+
+      assert_select 'li:nth-of-type(2)' do
+        assert_select 'a[href=?]', images_path(tag: 'awesome')
+      end
     end
   end
 
