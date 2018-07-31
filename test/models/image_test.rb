@@ -47,4 +47,40 @@ class ImageTest < ActiveSupport::TestCase
     assert_not_predicate image, :valid?
     assert_equal 'is too short (minimum is 5 characters)', image.errors.messages[:title].first
   end
+
+  def test_tag__valid_with_empty_tag_list
+    image = Image.new(url: 'https://abc.png',
+                      title: 'AppFolio Logo',
+                      tag_list: [])
+
+    assert_predicate image, :valid?
+  end
+
+  def test_tag__add_tags
+    image = Image.new(url: 'https://abc.png',
+                      title: 'AppFolio Logo')
+
+    image.tag_list.add('awesome')
+    assert_equal ['awesome'], image.tag_list
+  end
+
+  def test_tag__find_image_with_tag
+    image_a = Image.new(url: 'https://abc.png',
+                        title: 'AppFolio Logo')
+    image_a.tag_list.add('awesome')
+    image_a.save
+
+    image_b = Image.new(url: 'https://xyz.png',
+                        title: 'AppFolio Logo')
+    image_b.tag_list.add('cute')
+    image_b.save
+
+    image_c = Image.new(url: 'https://xyz.png',
+                        title: 'AppFolio Logo')
+    image_c.save
+
+    results = Image.tagged_with('awesome')
+    assert_equal image_a, results.first
+    assert_equal 1, results.length
+  end
 end

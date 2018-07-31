@@ -11,4 +11,14 @@
 
 <br>
 
+<% if @image.tag_list %>
+  <ul class="tag-list">
+    <% @image.tag_list.each do |tag| %>
+      <li>
+        <p><%= tag %></p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
 <%= link_to 'Back', images_path %>

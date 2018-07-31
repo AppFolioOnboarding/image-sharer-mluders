@@ -21,6 +21,11 @@
   </p>
 
   <p>
+    <%= form.label :tag_list %><br>
+    <%= form.text_field :tag_list, value: @image.tag_list.to_s %>
+  </p>
+
+  <p>
     <%= form.submit %>
   </p>
 <% end %>
