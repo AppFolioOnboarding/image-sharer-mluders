@@ -1,21 +1,25 @@
+# rubocop:disable Metrics/ClassLength
+
 require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @image = Image.create!(
+    Image.create!(
       url: 'http://abc.png',
-      title: 'hello',
+      title: 'howdy',
+      tag_list: ['cute'],
       created_at: Time.zone.now - 5.minutes
+    )
+
+    Image.create!(
+      url: 'http://xyz.png',
+      title: 'howdy',
+      tag_list: ['awesome'],
+      created_at: Time.zone.now
     )
   end
 
   def test_index
-    Image.create!(
-      url: 'http://xyz.png',
-      title: 'howdy',
-      created_at: Time.zone.now
-    )
-
     get images_path
 
     assert_response :ok
@@ -41,6 +45,21 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img', count: 0
   end
 
+  def test_index__with_matching_tag
+    get images_path, params: { tag: 'cute' }
+
+    assert_response :ok
+    assert_select 'img', count: 1
+    assert_select 'img[src=?]', 'http://abc.png'
+  end
+
+  def test_index__with_nonmatching_tag
+    get images_path, params: { tag: 'bogus' }
+
+    assert_response :ok
+    assert_select 'img', count: 0
+  end
+
   def test_show
     image2 = Image.create!(
       url: 'http://abc.png',
@@ -55,9 +74,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img[src=?]', 'http://abc.png'
 
     assert_select '.tag-list' do
-      assert_select 'li p', count: 2
-      assert_select 'li:nth-of-type(1)', text: 'cute'
-      assert_select 'li:nth-of-type(2)', text: 'awesome'
+      assert_select 'li a', count: 2
+      assert_select 'li:nth-of-type(1)' do
+        assert_select 'a[href=?]', images_path(tag: 'cute')
+      end
+
+      assert_select 'li:nth-of-type(2)' do
+        assert_select 'a[href=?]', images_path(tag: 'awesome')
+      end
     end
   end
 
@@ -123,3 +147,4 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'form[action="/images"]'
   end
 end
+# rubocop:enable Metrics/ClassLength

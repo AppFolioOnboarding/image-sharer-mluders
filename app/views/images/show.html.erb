@@ -15,7 +15,7 @@
   <ul class="tag-list">
     <% @image.tag_list.each do |tag| %>
       <li>
-        <p><%= tag %></p>
+        <%= link_to tag.to_s, images_path(tag: tag) %>
       </li>
     <% end %>
   </ul>
