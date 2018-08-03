@@ -1,0 +1,22 @@
+.gallery {
+  margin-bottom: 25px;
+}
+
+.gallery__clear-filters-text {
+  width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gallery__card {
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.gallery__image {
+  height: auto;
+  margin: 10px;
+  max-width: 100%;
+}

@@ -1,0 +1,21 @@
+.exhibit {
+  margin-bottom: 75px;
+}
+
+.exhibit__title {
+  margin-bottom: 30px;
+}
+
+.exhibit__tag-container {
+  margin-top: 40px;
+}
+
+.exhibit__tag {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 15px;
+}

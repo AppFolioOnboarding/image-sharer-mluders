@@ -1,12 +1,24 @@
-<%= link_to 'Add an image', new_image_path, id: 'add-image' %>
-
-<ul>
-  <% @images.each do |image| %>
-    <li>
-      <%= link_to image_path(image) do %>
-        <%= image_tag(image.url) %>
-        <p><%= image.title %></p>
-      <% end %>
-    </li>
+<div class="gallery">
+  <% if params[:tag].present? %>
+      <div class="col-8 offset-2 text-center">
+        <p class="gallery__clear-filters-text">
+          Showing images tagged with "<%= params[:tag] %>"
+        </p>
+        <%= link_to 'Clear Filters', images_path, class: 'btn btn-light btn-sm margin-bottom-25' %>
+      </div>
   <% end %>
-</ul>
+
+
+  <div class="row">
+    <% @images.each do |image| %>
+        <div class="col-xs-6 col-md-6 col-lg-3 mb-5 gallery__card">
+          <%= link_to image_path(image) do %>
+            <%= image_tag image.url, class: 'gallery__image', alt: image.title %>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+
+</div>
+
+
