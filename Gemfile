@@ -22,6 +22,9 @@ gem 'webpacker', '~> 3.0'
 # Acts as Taggable, for tagging images
 gem 'acts-as-taggable-on', '~> 6.0'
 
+# Simple Form
+gem 'simple_form'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
