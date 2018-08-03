@@ -15,10 +15,10 @@ class Image < ApplicationRecord
     return unless errors.count.zero? # if there are other error messages, don't run this validation.
 
     valid = false
-    %w[.jpeg .png .gif].each do |ext|
+    %w[.jpg .jpeg .png .gif].each do |ext|
       valid = true if url.ends_with?(ext)
     end
-    
+
     errors.add(:url, ' is not an acceptable type. Must be .jpg, .jpeg, .png, or .gif.') unless valid
   end
 end
