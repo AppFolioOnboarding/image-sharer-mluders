@@ -14,7 +14,7 @@
   <div class="row">
     <% @images.each do |image| %>
         <div class="col-xs-6 col-md-6 col-lg-3 mb-5 gallery__card">
-          <%= link_to image_path(image) do %>
+          <%= link_to image_path(image), class: 'js-gallery__link' do %>
             <%= image_tag image.url, class: 'gallery__image', alt: image.title %>
           <% end %>
         </div>

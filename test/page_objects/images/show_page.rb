@@ -4,25 +4,32 @@ module PageObjects
       path :image
 
       def image_url
-        # TODO
+        node.find('.img-fluid')['src']
       end
 
       def tags
-        # TODO
+        node.all('.exhibit__tag').map(&:text)
+      end
+
+      def click_tag!(text)
+        node.click_on(text)
+        window.change_to(IndexPage)
       end
 
       def delete
-        # TODO
+        node.click_on('Delete Image')
         yield node.driver.browser.switch_to.alert
       end
 
       def delete_and_confirm!
-        # TODO
+        node.click_on('Delete Image')
+        node.driver.browser.switch_to.alert.accept
         window.change_to(IndexPage)
       end
 
       def go_back_to_index!
-        # TODO
+        node.click_on('Home')
+        window.change_to(IndexPage)
       end
     end
   end
