@@ -21,7 +21,7 @@ class ImageTest < ActiveSupport::TestCase
                       title: 'AppFolio Logo')
 
     assert_not_predicate image, :valid?
-    assert_equal ' is invalid.', image.errors.messages[:url].first
+    assert_equal ' is not valid.', image.errors.messages[:url].first
   end
 
   def test_url__invalid_if_bad_file_type
@@ -29,7 +29,8 @@ class ImageTest < ActiveSupport::TestCase
                       title: 'AppFolio Logo')
 
     assert_not_predicate image, :valid?
-    assert_equal ' is not an acceptable type. Must be .jpeg, .png, or .gif.', image.errors.messages[:url].first
+    assert_equal ' is not an acceptable type. Must be .jpg, .jpeg, .png, or .gif.',
+                 image.errors.messages[:url].first
   end
 
   def test_title__invalid_if_blank

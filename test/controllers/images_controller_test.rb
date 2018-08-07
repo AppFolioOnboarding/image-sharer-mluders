@@ -23,15 +23,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
 
     assert_response :ok
-    assert_select '#add-image'
     assert_select 'img', count: 2
 
     # Ensure that images are ordered by creation date, descending
-    assert_select 'li:nth-of-type(1)' do
+    assert_select '.gallery__card:nth-of-type(1)' do
       assert_select 'img[src=?]', 'http://xyz.png'
     end
 
-    assert_select 'li:nth-of-type(2)' do
+    assert_select '.gallery__card:nth-of-type(2)' do
       assert_select 'img[src=?]', 'http://abc.png'
     end
   end
@@ -70,18 +69,13 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get image_path(image2)
 
     assert_response :ok
-    assert_select '#image-title', text: 'test title'
+    assert_select '.exhibit__title', text: 'test title'
     assert_select 'img[src=?]', 'http://abc.png'
 
-    assert_select '.tag-list' do
-      assert_select 'li a', count: 2
-      assert_select 'li:nth-of-type(1)' do
-        assert_select 'a[href=?]', images_path(tag: 'cute')
-      end
-
-      assert_select 'li:nth-of-type(2)' do
-        assert_select 'a[href=?]', images_path(tag: 'awesome')
-      end
+    assert_select '.exhibit__tag-container' do
+      assert_select '.exhibit__tag', count: 2
+      assert_select '.exhibit__tag:nth-of-type(1)[href=?]', images_path(tag: 'cute')
+      assert_select '.exhibit__tag:nth-of-type(2)[href=?]', images_path(tag: 'awesome')
     end
   end
 

@@ -1,24 +1,24 @@
-<% if flash[:notice] %>
-  <div class="notice"><%= flash[:notice] %></div>
-<% end %>
+<div class="exhibit">
+  <div class="row">
+    <div class="col-8 offset-2 text-center">
+      <% if flash[:notice] %>
+          <div class="notice alert alert-success"><%= flash[:notice] %></div>
+      <% end %>
 
 
-<h1 id="image-title">
-  <%= @image.title %>
-</h1>
+      <h1 class="exhibit__title">
+        <%= @image.title %>
+      </h1>
 
-<img src="<%= @image.url %>" alt="<%= @image.title %>" />
+      <img src="<%= @image.url %>" alt="<%= @image.title %>" class="img-fluid"/>
 
-<br>
-
-<% if @image.tag_list %>
-  <ul class="tag-list">
-    <% @image.tag_list.each do |tag| %>
-      <li>
-        <%= link_to tag.to_s, images_path(tag: tag) %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-<%= link_to 'Back', images_path %>
+      <div class="exhibit__tag-container">
+        <% if @image.tag_list %>
+            <% @image.tag_list.each do |tag| %>
+                <%= link_to tag.to_s, images_path(tag: tag), class: 'btn btn-outline-success exhibit__tag' %>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
