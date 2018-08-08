@@ -8,6 +8,7 @@ class Image < ApplicationRecord
   validate :acceptable_file_extension?
   validates :title, presence: true,
                     length: { minimum: 5 }
+  validates :tag_list, presence: true
 
   private
 
