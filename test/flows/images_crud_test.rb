@@ -10,11 +10,13 @@ class ImagesCrudTest < FlowTestCase
     url = 'https://media3.giphy.com/media/EldfH1VJdbrwY/200.gif'
     new_image_page.url.set('invalid')
     new_image_page.title.set('A random title')
-    new_image_page.tag_list.set(tags.join(', '))
     new_image_page = new_image_page.create_image!.as_a(PageObjects::Images::NewPage)
 
     assert_text '.image_url.invalid-feedback', 'Url is not valid.'
-    new_image_page.url.set('https://media3.giphy.com/media/EldfH1VJdbrwY/200.gif')
+    assert_text '.image_tag_list.invalid-feedback', "Tag list can't be blank"
+
+    new_image_page.url.set(url)
+    new_image_page.tag_list.set(tags.join(', '))
     image_show_page = new_image_page.create_image!
 
     assert_equal 'The image has been added.', image_show_page.flash_message(:notice)
