@@ -60,13 +60,13 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_show
-    image2 = Image.create!(
+    img = Image.create!(
       url: 'http://abc.png',
       title: 'test title',
       tag_list: %w[cute awesome]
     )
 
-    get image_path(image2)
+    get image_path(img)
 
     assert_response :ok
     assert_select '.exhibit__title', text: 'test title'
@@ -143,6 +143,75 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select 'form[action="/images"]'
+  end
+
+  def test_edit
+    img = Image.create!(
+      url: 'http://abc.png',
+      title: 'test title',
+      tag_list: %w[cute awesome]
+    )
+
+    get image_path(img)
+
+    assert_response :ok
+    assert_select '.exhibit__title', text: 'test title'
+    assert_select 'img[src=?]', 'http://abc.png'
+
+    assert_select '.exhibit__tag-container' do
+      assert_select '.exhibit__tag', count: 2
+      assert_select '.exhibit__tag:nth-of-type(1)[href=?]', images_path(tag: 'cute')
+      assert_select '.exhibit__tag:nth-of-type(2)[href=?]', images_path(tag: 'awesome')
+    end
+  end
+
+  def test_update__tag_list
+    img = Image.create!(
+      url: 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
+      title: 'AppFolio logo',
+      tag_list: 'cool, appfolio'
+    )
+
+    params = {
+      'image' => {
+        'tag_list' => 'whatup, hello'
+      }
+    }
+
+    assert_difference 'Image.count', 0 do
+      patch image_path(img), params: params
+    end
+
+    img.reload
+
+    assert_redirected_to image_path(img.id)
+    assert_equal 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png', img.url
+    assert_equal 'AppFolio logo', img.title
+    assert_equal %w[whatup hello], img.tag_list
+
+    follow_redirect!
+    assert_select '.notice', 'The image has been updated.'
+  end
+
+  def test_update__invalid_with_empty_tag_list
+    img = Image.create!(
+      url: 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
+      title: 'AppFolio logo',
+      tag_list: 'cool, appfolio'
+    )
+
+    params = {
+      'image' => {
+        'tag_list' => ''
+      }
+    }
+
+    assert_no_difference 'Image.count' do
+      patch image_path(img), params: params
+    end
+
+    assert_response :unprocessable_entity
+    assert_select 'form.edit_image'
   end
 
   def test_destroy
