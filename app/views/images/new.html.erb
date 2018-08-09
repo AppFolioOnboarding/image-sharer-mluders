@@ -5,7 +5,7 @@
     <%= simple_form_for @image do |f| %>
       <%= f.input :url, :as => :string %>
       <%= f.input :title, :as => :string %>
-      <%= f.input :tag_list, :as => :string %>
+      <%= f.input :tag_list, :as => :string, input_html: { value: @image.tag_list.to_s } %>
       <%= f.button :submit, 'Upload Image', class: 'btn-primary btn-lg' %>
     <% end %>
   </div>
