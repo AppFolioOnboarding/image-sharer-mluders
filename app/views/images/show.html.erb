@@ -1,10 +1,7 @@
 <div class="exhibit">
   <div class="row">
     <div class="col-8 offset-2 text-center">
-      <% if flash[:notice] %>
-          <div class="notice alert alert-success"><%= flash[:notice] %></div>
-      <% end %>
-
+      <%= render 'layouts/notice' %>
 
       <h1 class="exhibit__title">
         <%= @image.title %>
