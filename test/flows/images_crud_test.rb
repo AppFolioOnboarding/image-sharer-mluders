@@ -95,4 +95,31 @@ class ImagesCrudTest < FlowTestCase
     images_index_page = images_index_page.clear_tag_filter!
     assert_equal 3, images_index_page.images.count
   end
+
+  def test_update_image_tag_list
+    cute_puppy_url = 'http://ghk.h-cdn.co/assets/16/09/980x490/landscape-1457107485-gettyimages-512366437.jpg'
+    Image.create!(
+      url: cute_puppy_url,
+      title: 'A cute puppy',
+      tag_list: 'puppy, cute'
+    )
+
+    images_index_page = PageObjects::Images::IndexPage.visit
+    image_to_show = images_index_page.images.find do |image|
+      image.url == cute_puppy_url
+    end
+
+    image_show_page = image_to_show.view!
+    image_edit_page = image_show_page.edit_tags!
+
+    image_edit_page.tag_list.set('')
+    image_failed_edit_page = image_edit_page.update_tag_list!
+
+    assert_text '.image_tag_list.invalid-feedback', "Tag list can't be blank"
+
+    image_failed_edit_page.tag_list.set('air, bud')
+    image_show_page = image_failed_edit_page.update_tag_list!
+
+    assert_equal 'The image has been updated.', image_show_page.flash_message(:notice)
+  end
 end
