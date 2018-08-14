@@ -17,6 +17,8 @@
         <% end %>
       </div>
 
+      <%= link_to 'Edit Tags', edit_image_path(@image), class: 'btn btn-sm btn-success'%>
+
       <%= link_to 'Delete Image', image_path(@image), method: :delete, data: { confirm: 'Are you sure?' },
                   class: 'btn btn-sm btn-danger' %>
     </div>

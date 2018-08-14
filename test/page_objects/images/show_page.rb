@@ -31,6 +31,11 @@ module PageObjects
         node.click_on('Home')
         window.change_to(IndexPage)
       end
+
+      def edit_tags!
+        node.click_on('Edit Tags')
+        window.change_to(EditPage)
+      end
     end
   end
 end
