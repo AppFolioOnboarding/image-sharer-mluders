@@ -1,10 +1,7 @@
 <div class="exhibit">
   <div class="row">
     <div class="col-8 offset-2 text-center">
-      <% if flash[:notice] %>
-          <div class="notice alert alert-success"><%= flash[:notice] %></div>
-      <% end %>
-
+      <%= render 'layouts/notice' %>
 
       <h1 class="exhibit__title">
         <%= @image.title %>
@@ -12,13 +9,16 @@
 
       <img src="<%= @image.url %>" alt="<%= @image.title %>" class="img-fluid"/>
 
-      <div class="exhibit__tag-container">
+      <div class="exhibit__tag-container margin-bottom-50">
         <% if @image.tag_list %>
             <% @image.tag_list.each do |tag| %>
                 <%= link_to tag.to_s, images_path(tag: tag), class: 'btn btn-outline-success exhibit__tag' %>
             <% end %>
         <% end %>
       </div>
+
+      <%= link_to 'Delete Image', image_path(@image), method: :delete, data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-sm btn-danger' %>
     </div>
   </div>
 </div>

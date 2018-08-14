@@ -140,5 +140,38 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_select 'form[action="/images"]'
   end
+
+  def test_destroy
+    img = Image.create!(
+      url: 'http://hello.png',
+      title: 'Destroy me',
+      tag_list: ['cute']
+    )
+
+    assert_difference 'Image.count', -1 do
+      delete image_path(img)
+      assert_redirected_to images_path
+    end
+
+    follow_redirect!
+    assert_select '.notice', 'The image has been deleted.'
+  end
+
+  def test_destroy_nonexistent_image
+    img = Image.create!(
+      url: 'http://hello.png',
+      title: 'Destroy me',
+      tag_list: ['cute']
+    )
+
+    assert_difference 'Image.count', -1 do
+      delete image_path(img)
+    end
+
+    delete(image_path(img)) # Attempt to destroy the image again.
+
+    assert_response :not_found
+    assert_select 'h1', "The page you were looking for doesn't exist."
+  end
 end
 # rubocop:enable Metrics/ClassLength
