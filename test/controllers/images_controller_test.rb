@@ -109,7 +109,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select '.notice', 'The image has been added.'
   end
 
-  def test_create__valid_with_no_tag_list
+  def test_create__invalid_with_no_tag_list
     params = {
       'image' => {
         'url' => 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
@@ -117,11 +117,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_difference 'Image.count', 1 do
+    assert_no_difference 'Image.count' do
       post images_path, params: params
     end
 
-    assert_empty Image.last.tag_list
+    assert_response :unprocessable_entity
+
+    assert_select '.image_tag_list' do
+      assert_select '.invalid-feedback', "Tag list can't be blank"
+    end
   end
 
   def test_create__invalid

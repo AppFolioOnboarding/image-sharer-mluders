@@ -3,7 +3,8 @@ require 'test_helper'
 class ImageTest < ActiveSupport::TestCase
   def test_image__valid
     image = Image.new(url: 'https://www.betterbuys.com/wp-content/uploads/2016/05/AppFolio.png',
-                      title: 'AppFolio Logo')
+                      title: 'AppFolio Logo',
+                      tag_list: ['logo'])
 
     assert_predicate image, :valid?
   end
@@ -49,12 +50,13 @@ class ImageTest < ActiveSupport::TestCase
     assert_equal 'is too short (minimum is 5 characters)', image.errors.messages[:title].first
   end
 
-  def test_tag__valid_with_empty_tag_list
+  def test_tag__invalid_with_empty_tag_list
     image = Image.new(url: 'https://abc.png',
                       title: 'AppFolio Logo',
                       tag_list: [])
 
-    assert_predicate image, :valid?
+    assert_not_predicate image, :valid?
+    assert_equal "can't be blank", image.errors.messages[:tag_list].first
   end
 
   def test_tag__add_tags
